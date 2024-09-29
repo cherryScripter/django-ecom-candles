@@ -18,7 +18,8 @@ DB_PASSWORD_MY = os.environ['DB_PASSWORD_MY']
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-0@z6u8rz8%j#gdff&tqouh0ro*f)j8o$&$q$&360vb0k@ce@o2'
+# SECRET_KEY = 'django-insecure-0@z6u8rz8%j#gdff&tqouh0ro*f)j8o$&$q$&360vb0k@ce@o2'
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
