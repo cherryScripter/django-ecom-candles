@@ -16,15 +16,42 @@
         		<center>
         			<div class="col-8">
         				<br/><br/>
-                        
-                        {% for category in categories %}
-<h3><a href="{% url 'category' category %}">{{ category }}</a></h3>
 
-                        {% endfor %}
-<br/><br/><br/><br/>
+                        <div class="container marketing">
+
+{% load static %}
+    <!-- Three columns of text below the carousel -->
+<div class="row">
+    {% for category in categories %}
+      <div class="col-lg-4">
+
+                  <!-- Manually map category names to static image paths -->
+        {% if category.name == 'Soy Candles' %}
+          <img src="{% static 'assets/category1.jpg' %}" alt="{{ category.name }}" class="bd-placeholder-img rounded-circle mb-2" width="140" height="140">
+        {% elif category.name == 'Sets' %}
+          <img src="{% static 'assets/category2.jpg' %}" alt="{{ category.name }}" class="bd-placeholder-img rounded-circle mb-2" width="140" height="140">
+        {% elif category.name == 'Accessories' %}
+          <img src="{% static 'assets/category3.jpg' %}" alt="{{ category.name }}" class="bd-placeholder-img rounded-circle mb-2" width="140" height="140">
+        {% else %}
+          <!-- Fallback in case no specific image is matched -->
+          <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="var(--bs-secondary-color)"></rect></svg>
+        {% endif %}
+
+          <h3><a href="{% url 'category' category %}" class="list-group-item list-group-item-action">{{ category }}</a></h3>
+      </div><!-- /.col-lg-4 -->
+    {% endfor %}
+</div><!-- /.row -->
+
+    <!-- /END THE FEATURETTES -->
+
         			</div>
         		</center>
         	</div>
         </div>
 
+<div style="margin-top: 80px;"></div>
 {% endblock %}
+
+
+
+

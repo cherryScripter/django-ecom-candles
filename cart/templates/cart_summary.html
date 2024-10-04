@@ -61,17 +61,17 @@
                 {% endif %}
             {% endfor %}
 
-
                   <option value="1">1</option>
                   <option value="2">2</option>
                   <option value="3">3</option>
                   <option value="4">4</option>
                   <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
                 </select>
                 </div>
             </div>
             <br/><br/>
-        <a href="{% url 'home'%}" class="btn btn-secondary">Home</a>
         <button type="button" data-index="{{product.id}}" class="btn btn-secondary update-cart">Update</button>
         <button type="button" data-index="{{product.id}}" class="btn btn-danger delete-product">Remove</button>
 
@@ -82,17 +82,16 @@
 </div>
 
 
-
         	{% endfor %}
             <div align="right">
             <h3>Total: ${{ totals }}</h3>
             <a href="{% url 'checkout' %}" class="btn btn-success">Checkout</a>
 
             </div>
-            <br/><br/><br/>
+            <div style="margin-top: 80px;"></div>
         	{% else %}
-        	There's Nothing In Your Cart...
-        	<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+        	There's nothing in your cart.
+        	<div style="margin-top: 100px;"></div>
         {% endif %}
     	</div>
 

@@ -19,28 +19,68 @@ def cart_summary(request):
 
 
 def cart_add(request):
-    # Get the cart
     cart = Cart(request)
-    # test for POST
+
     if request.POST.get('action') == 'post':
-        # Get stuff
         product_id = int(request.POST.get('product_id'))
         product_qty = int(request.POST.get('product_qty'))
 
-        # lookup product in DB
         product = get_object_or_404(model_product, id=product_id)
 
-        # Save to session
-        cart.add(product=product, quantity=product_qty)
+        # Try adding the product to the cart
+        if not cart.add(product=product, quantity=product_qty):
+            # Max quantity exceeded, show error message
+            messages.error(request, "Maximum quantity for this product has been reached.")
+            return JsonResponse({'error': "Max quantity exceeded"})
 
         # Get Cart Quantity
         cart_quantity = cart.__len__()
 
-        # Return resonse
-        # response = JsonResponse({'Product Name: ': product.name})
+        # Send success response
         response = JsonResponse({'qty': cart_quantity})
-        messages.success(request, ("Product added to a cart."))
+        messages.success(request, "Product added to the cart.")
         return response
+# def cart_add(request):
+#     # Get the cart
+#     cart = Cart(request)
+#     # test for POST
+#     if request.POST.get('action') == 'post':
+#         # Get stuff
+#         product_id = int(request.POST.get('product_id'))
+#         product_qty = int(request.POST.get('product_qty'))
+#
+#         # lookup product in DB
+#         product = get_object_or_404(model_product, id=product_id)
+#
+#         # Try adding the product to the cart
+#         if not cart.add(product=product, quantity=product_qty):
+#             # Max quantity exceeded, show error message
+#             messages.error(request, "Maximum quantity for this product has been reached.")
+#             return JsonResponse({'error': "Max quantity exceeded"})
+#
+#         # Get Cart Quantity
+#         cart_quantity = cart.__len__()
+#
+#         # Send success response
+#         response = JsonResponse({'qty': cart_quantity})
+#         messages.success(request, "Product added to the cart.")
+#         return response
+#
+
+
+
+
+        # # Save to session
+        # cart.add(product=product, quantity=product_qty)
+        #
+        # # Get Cart Quantity
+        # cart_quantity = cart.__len__()
+        #
+        # # Return resonse
+        # # response = JsonResponse({'Product Name: ': product.name})
+        # response = JsonResponse({'qty': cart_quantity})
+        # messages.success(request, ("Product added to a cart."))
+        # return response
 
 
 def cart_delete(request):

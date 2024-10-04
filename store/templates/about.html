@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+{% load static %}
 
 <!-- Header-->
         <header class="bg-dark py-5">
@@ -11,40 +12,74 @@
             </div>
         </header>
 
-        <div class="container">
-        	<div class="row">
-        		<center>
-        			<div class="col-8">
-        				<br/><br/>
-<p align="justify">
-    At Cozy & Kindled we create handcrafted soy candles that bring warmth, comfort,
-    and a soothing ambiance to your home. Our candles are made from natural ingredients,
-    thoughtfully designed to elevate your space with delightful scents and a touch of cozy charm.
-    Each candle is crafted with care, reflecting our passion for quality and sustainability.
-</p>
-<h2>Our Story</h2>
-<p align="justify">
-    We’re two friends who turned a shared passion for home décor into a small business built
-    on creativity and sustainability. What started as a fun weekend project soon evolved
-    into crafting hand-poured candles that bring warmth and relaxation into everyday life.
-    Inspired by nature and the desire to create something meaningful, we carefully select
-    each ingredient to ensure our candles are both eco-friendly and beautifully made.
-    Our mission is simple: to help you create moments of calm and comfort, one candle at a time.
-</p>
-                        <h2>Why Shop with Us?</h2>
-<p><ul>
-                        <li>Handcrafted with Love: Every candle is poured by hand, ensuring a personal touch in every product.</li>
-                        <li>Eco-Friendly: We use 100% natural soy wax, clean-burning wicks, and eco-conscious packaging.</li>
-                        <li>Sustainable: Our commitment to sustainability means you can enjoy our candles guilt-free, knowing they’re made with the planet in mind.</li>
-                        <li>Unique Scents: Carefully curated fragrances that transform any space into a cozy haven.</li>
-                        <li>Experience the warmth and care that go into every Cozy & Kindled candle, and let us help you make your home feel truly special.</li>
+<div class="container px-3 px-lg-5" style="max-width: 1000px;">
 
-                    </ul>
-                        </p>
-<br/><br/>
-        			</div>
-        		</center>
-        	</div>
-        </div>
+     <!-- START THE FEATURETTES -->
+        <hr class="featurette-divider" style="margin-top: 40px;">
+
+        <div class="row featurette">
+
+          <div class="col-md-7">
+            <h2 class="featurette-heading" style="text-align: center; margin-bottom: 20px;"><span class="text-muted">The Cozy & Kindled Vision</span></h2>
+            <p class="lead" style="font-size: 18px; padding: 0 15px; text-align: justify;">At Cozy & Kindled, we craft soy candles that bring warmth, comfort, and peace to
+                your home. Made from natural ingredients, our candles are designed to create a cozy, eco-conscious
+                ambiance. Each one reflects our passion for quality and sustainability, inviting calm into your
+                space with every flicker.</p>
+          </div>
+    <div class="col-md-5">
+        <img class="featurette-image img-fluid mx-auto"
+             src="{% static 'assets/ecopack.jpg' %}"
+             alt="soy_candles"
+             style="width: 300px; height: 250px; object-fit: cover;"> <!-- Maintain aspect ratio -->
+    </div>
+</div>
+
+        <hr class="featurette-divider">
+
+        <div class="row featurette">
+          <div class="col-md-7 order-md-2">
+            <h2 class="featurette-heading" style="text-align: center; margin-bottom: 20px;"><span class="text-muted">Our Story</span></h2>
+            <p class="lead" style="font-size: 18px; padding: 0 15px; text-align: justify;">Born from friendship, our journey began as a weekend project and blossomed into
+                a passion for crafting hand-poured candles. We celebrate the beauty of connection and seek
+                mindfulness in every moment. With each eco-friendly candle, we invite you to pause, reflect,
+                and embrace warmth and serenity in your life.</p>
+          </div>
+    <div class="col-md-5 order-md-1">
+        <img class="featurette-image img-fluid mx-auto"
+             src="{% static 'assets/friends3.jpg' %}"
+             alt="coworkers"
+             style="width: 300px; height: 250px; object-fit: cover;"> <!-- Maintain aspect ratio -->
+    </div>
+</div>
+
+        <hr class="featurette-divider">
+
+        <div class="row featurette">
+          <div class="col-md-7">
+            <h2 class="featurette-heading" style="text-align: center; margin-bottom: 20px;"><span class="text-muted">Why Shop with Us?</span></h2>
+                <p class="lead">
+      <ul class="list-unstyled" style="font-size: 18px; padding: 0 15px; text-align: justify;"> <!-- Use Bootstrap's class to remove default list styling -->
+        <li class="lead">♡ Handcrafted with Love: Personal touch guaranteed</li>
+        <li class="lead">♡ Eco-Friendly: Natural soy wax</li>
+        <li class="lead">♡ Sustainable: Guilt-free enjoyment</li>
+        <li class="lead">♡ Unique Scents: Cozy fragrance experience</li>
+        <li class="lead">♡ Warmth & Care: Special home ambiance</li>
+      </ul>
+    </p>
+          </div>
+    <div class="col-md-5">
+        <img class="featurette-image img-fluid mx-auto"
+             src="{% static 'assets/prod.jpg' %}"
+             alt="candles_production"
+             style="width: 300px; height: 250px; object-fit: cover;"> <!-- Maintain aspect ratio -->
+    </div>
+</div>
+        <hr class="featurette-divider">
+
+        <!-- /END THE FEATURETTES -->
+
+      </div>
+<div style="margin-top: 60px;"></div>
+
 
 {% endblock %}

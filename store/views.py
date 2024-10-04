@@ -96,6 +96,7 @@ def update_user(request):
 
 
 def category_summary(request):
+
     categories = Category.objects.all()
     return render(request, 'category_summary.html', {"categories": categories})
 

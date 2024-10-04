@@ -86,6 +86,7 @@ class UpdateUserForm(UserChangeForm):
 
 
 class SignUpForm(UserCreationForm):
+    usable_password = None
     email = forms.EmailField(label="",
                              widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Email Address'}))
     first_name = forms.CharField(label="", max_length=100,
@@ -123,3 +124,7 @@ class SignUpForm(UserCreationForm):
         self.fields[
             'password2'].help_text = '<span class="form-text text-muted"><small>Enter the same ' \
                                      'password as before, for verification.</small></span>'
+
+        # Removing password-based authentication
+        # if 'usable_password' in self.fields:
+        #     del self.fields['usable_password']
