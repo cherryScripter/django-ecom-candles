@@ -8,6 +8,7 @@
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a></li>
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'search' %}">Search</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'get_inspired' %}">Get Inspired</a></li>
 
             {% if user.is_authenticated %}
 
@@ -41,9 +42,6 @@
             {% endif %}
 
 
-
-
-
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">All Products</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -62,7 +60,6 @@
 <span class="badge bg-dark text-white ms-1 rounded-pill" id="cart_quantity">{{ cart|length }}
 
 </span></a>
-
 
 
                     </form>

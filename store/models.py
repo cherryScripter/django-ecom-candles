@@ -70,6 +70,17 @@ class Product(models.Model):
         return self.name
 
 
+class ProductReview(models.Model):
+    product = models.ForeignKey(Product, related_name='reviews', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='reviews', on_delete=models.CASCADE)
+    content = models.TextField(blank=True, null=True, max_length=400)
+    rating = models.IntegerField(default=0)
+    date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user} - {self.rating}/5 for {self.product.name}"
+
+
 # Customer Orders
 class Order(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)

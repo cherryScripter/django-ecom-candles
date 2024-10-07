@@ -1,5 +1,7 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from .models import Product, Category, Profile
+import requests
+from .models import Product, Category, Profile, ProductReview
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -117,7 +119,21 @@ def category(request, foo):
 
 def product(request, pk):
     product = Product.objects.get(id=pk)
-    return render(request, 'product.html', {'product': product})
+    reviews = ProductReview.objects.filter(product=product)
+    # Prepare stars for each review
+    for review in reviews:
+        review.stars = '⭐' * review.rating
+
+    # Add a review
+    if request.method == "POST" and request.user.is_authenticated:
+        rating = request.POST.get('rating', 3)
+        content = request.POST.get('content', '')
+
+        review = ProductReview.objects.create(product=product, user=request.user, rating=rating, content=content)
+
+        return redirect('product', pk=product.id)
+
+    return render(request, 'product.html', {'product': product, 'reviews': reviews})
 
 
 def home(request):
@@ -129,11 +145,35 @@ def about(request):
     return render(request, 'about.html', {})
 
 
+def get_inspired(request):
+    api_url = 'https://zenquotes.io/api/random'
+
+    try:
+        response = requests.get(api_url)
+        response.raise_for_status()
+        api_data = response.json()
+
+        # Extracting the quote and author from the JSON data
+        quote = api_data[0]['q']  # Accessing the quote text
+        author = api_data[0]['a']  # Accessing the author's name
+
+        # Check if the request is made via AJAX by checking the headers
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            return JsonResponse({'quote': quote, 'author': author})
+
+    except requests.exceptions.RequestException as e:
+        quote = None  # If there's an error, set quote to None
+        author = None  # If there's an error, set author to None
+        print(f"An error occurred: {e}")
+
+    return render(request, 'get_inspired.html', {'quote': quote, 'author': author})
+
 def login_user(request):
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
+
         if user is not None:
             login(request, user)
 
@@ -148,18 +188,22 @@ def login_user(request):
                 # Add the loaded cart dictionary to our session
                 # Get the cart
                 cart = Cart(request)
-                # Loop through` the cart and add the items from the database
+                # Loop through the cart and add the items from the database
                 for key, value in converted_cart.items():
                     cart.db_add(product=key, quantity=value)
 
             messages.success(request, "You have been logged in!")
-            return redirect('home')
+
+            # Get the 'next' parameter from the request
+            next_url = request.POST.get('next', 'home')  # Redirect to 'home' if next is not provided
+            return redirect(next_url)
         else:
-            messages.success(request, "There was an error, please try again.")
+            messages.error(request, "Invalid username or password. Please try again.")
             return redirect('login')
 
     else:
-        return render(request, 'login.html', {})
+        next_url = request.GET.get('next', '')  # Capture the next parameter for GET requests
+        return render(request, 'login.html', {'next': next_url})
 
 
 def logout_user(request):

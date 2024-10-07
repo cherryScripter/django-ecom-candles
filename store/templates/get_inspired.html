@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<!-- Header -->
+<header class="bg-dark py-3">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder mb-4">Get Inspired</h1>
+            <p class="lead fw-normal text-white-50 mb-0" style="text-align: center; line-height: 1.7; max-width: 700px; margin: 0 auto;">
+            Being present is the key to harmony in life. Light a soy candle and let our
+                mindfulness quotes inspire your meditation and daily practice.
+            </p>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="row">
+
+<div class="px-4 py-1 my-4 text-center">
+    <img class="d-block mx-auto mb-1" src="{% static 'assets/meditate.jpg' %}" alt="meditation" width="500" height="281">
+    <h1 class="display-5 fw-bold text-body-emphasis pt-4" id="quote-text">{{ quote }}</h1>
+    <div class="col-lg-6 mx-auto">
+      <p class="lead mb-4" id="author-text">{{ author }}</p>
+
+      <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+        <button type="button" class="btn btn-outline-secondary btn-lg px-4" onclick="fetchNewQuote()">✧</button>
+      </div>
+    </div>
+<!-- API Credit -->
+    <div class="text-end" style="margin: 30px; position: relative; bottom: 0;">
+    <p class="text-muted" style="font-size: 0.75rem; margin-top: 10px; margin-bottom: 0;">
+    Inspirational quotes provided by <a href="https://zenquotes.io/" target="_blank">ZenQuotes API</a>
+    </p>
+    </div>
+</div>
+
+
+    </div>
+</div>
+
+<script>
+    // Function to fetch a new quote using Fetch API
+    async function fetchNewQuote() {
+        try {
+            // Fetch the data from Django view
+            const response = await fetch("{% url 'get_inspired' %}", {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'  // Identifies this as an AJAX request
+                }
+            });
+
+            // Check if the request was successful
+            if (!response.ok) {
+                throw new Error('Failed to fetch the quote');
+            }
+
+            // Parse the JSON response
+            const data = await response.json();
+
+            // Check if there's an error in the response data
+            if (data.error) {
+                alert(data.error);  // Show error message if there's an error
+                return;
+            }
+
+            // Update the quote and author in the DOM
+            document.getElementById('quote-text').textContent = data.quote;
+            document.getElementById('author-text').textContent = data.author;
+
+        } catch (error) {
+            console.error('Error fetching quote:', error);  // Log fetch errors
+            alert('Failed to fetch a new quote. Please try again later.');
+        }
+    }
+</script>
+
+
+{% endblock %}
