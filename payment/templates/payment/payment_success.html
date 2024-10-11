@@ -1,10 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<h1>Payment Success</h1>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<!-- Header-->
+<div class="px-4 py-4 my-5 text-center">
+    <img class="d-block mx-auto mb-1" src="{% static 'assets/accept.png' %}" alt="accept_icon" width="121" height="118">
+    <h1 class="display-5 fw-bold text-body-emphasis">Payment Success</h1>
+    <div class="col-lg-6 mx-auto">
+      <p class="lead mb-4">Thank you for your purchase.</p>
+    </div>
+  </div>
+
+<div style="margin-top: 80px;"></div>
+
+{% endblock %}

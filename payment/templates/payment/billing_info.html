@@ -82,18 +82,15 @@
     <form method="POST" action="{% url 'process_order' %}">
       {% csrf_token %}
     {{ billing_form.as_p }}
-
   </div>
 </div>
 <br/>
+    <button type="submit" class="btn btn-secondary">
+      Pay Now
+    </button>
+    </form>
 
-
-
-<button type="submit" class="btn btn-secondary">
-  Pay Now
-</button>
-</form>
-<div style="margin-top: 80px;"></div>
+                        <div style="margin-top: 80px;"></div>
 
 
             </div>

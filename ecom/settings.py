@@ -9,9 +9,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Load our environmental variables
 load_dotenv()
 
+# password DB for localhost
+DB_PASSWORD_MY = os.environ.get('DB_PASSWORD_MY')
 
 # password DB
-DB_PASSWORD_MY = os.environ['DB_PASSWORD_MY']
+# DB_PASSWORD_MY = os.environ['DB_PASSWORD_MY']
 
 
 # Quick-start development settings - unsuitable for production
@@ -23,9 +25,9 @@ SECRET_KEY = os.environ['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '7e8c-2a02-a31a-a2f1-c780-7098-fe47-d02f-f32a.ngrok-free.app']
 # CSRF_TRUSTED_ORIGINS = ['https://djangotest.com', 'https://django-ecommerce-production-81b6.up.railway.app']
-CSRF_TRUSTED_ORIGINS = []
+CSRF_TRUSTED_ORIGINS = ['https://7e8c-2a02-a31a-a2f1-c780-7098-fe47-d02f-f32a.ngrok-free.app']
 
 SESSION_COOKIE_AGE = 86400
 

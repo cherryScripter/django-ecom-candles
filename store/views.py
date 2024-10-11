@@ -168,6 +168,7 @@ def get_inspired(request):
 
     return render(request, 'get_inspired.html', {'quote': quote, 'author': author})
 
+
 def login_user(request):
     if request.method == "POST":
         username = request.POST['username']
@@ -195,7 +196,7 @@ def login_user(request):
             messages.success(request, "You have been logged in!")
 
             # Get the 'next' parameter from the request
-            next_url = request.POST.get('next', 'home')  # Redirect to 'home' if next is not provided
+            next_url = request.POST.get('next') or 'home'  # Redirect to 'home' if next is not provided
             return redirect(next_url)
         else:
             messages.error(request, "Invalid username or password. Please try again.")

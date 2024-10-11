@@ -88,8 +88,9 @@ class Order(models.Model):
     quantity = models.IntegerField(default=1)
     address = models.CharField(max_length=100, default='', blank=True)
     phone = models.CharField(max_length=20, default='', blank=True)
-    date = models.DateField(default=datetime.datetime.today)
+    date = models.DateField(default=datetime.datetime.today, blank=True, null=True)
     status = models.BooleanField(default=False)
+
 
     def __str__(self):
         return self.product
