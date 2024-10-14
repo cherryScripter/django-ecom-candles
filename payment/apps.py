@@ -8,3 +8,5 @@ class PaymentConfig(AppConfig):
     # Set up paypal IPN Signal
     def ready(self):
         import payment.hooks
+        import payment.signals
+

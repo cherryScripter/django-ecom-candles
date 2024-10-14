@@ -2,7 +2,6 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,9 +24,9 @@ SECRET_KEY = os.environ['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '7e8c-2a02-a31a-a2f1-c780-7098-fe47-d02f-f32a.ngrok-free.app']
-# CSRF_TRUSTED_ORIGINS = ['https://djangotest.com', 'https://django-ecommerce-production-81b6.up.railway.app']
-CSRF_TRUSTED_ORIGINS = ['https://7e8c-2a02-a31a-a2f1-c780-7098-fe47-d02f-f32a.ngrok-free.app']
+# ALLOWED_HOSTS = ['localhost', '8d61-2a02-a31a-a2f1-c780-786e-a633-5c78-fb7f.ngrok-free.app']
+# # CSRF_TRUSTED_ORIGINS = ['https://djangotest.com', 'https://django-ecommerce-production-81b6.up.railway.app']
+# CSRF_TRUSTED_ORIGINS = ['https://8d61-2a02-a31a-a2f1-c780-786e-a633-5c78-fb7f.ngrok-free.app']
 
 SESSION_COOKIE_AGE = 86400
 
@@ -92,7 +91,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'railway',
         'USER': 'postgres',
-        'PASSWORD':  os.environ.get('DB_PASSWORD_MY'),
+        'PASSWORD': os.environ.get('DB_PASSWORD_MY'),
         'HOST': 'junction.proxy.rlwy.net',
         'PORT': '46549',
 
@@ -150,3 +149,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 PAYPAL_TEST = True
 
 PAYPAL_RECEIVER_EMAIL = 'business-kot@test.com'  # Business Sandbox account
+
+# SMTP Configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'cozyandkindled@gmail.com'
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = 'cozyandkindled@gmail.com'

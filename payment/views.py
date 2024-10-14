@@ -6,6 +6,8 @@ from payment.models import ShippingAddress, Order, OrderItem
 from django.contrib.auth.models import User
 from django.contrib import messages
 from store.models import Product, Profile
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
 
 # Import Some Paypal Stuff
 from django.urls import reverse
@@ -13,6 +15,7 @@ from paypal.standard.forms import PayPalPaymentsForm
 from django.conf import settings
 # unique user id for duplictate orders
 import uuid
+
 
 def orders(request, pk):
     if request.user.is_authenticated and request.user.is_superuser:
@@ -197,7 +200,6 @@ def process_order(request):
         return redirect('home')
 
 
-# jakis problem tu jest ze nie przechodzi shipping info na nastepna strone
 def billing_info(request):
     if request.POST:
         # Get the cart
@@ -217,7 +219,6 @@ def billing_info(request):
         shipping_address = f"{my_shipping['shipping_address1']}\n{my_shipping['shipping_address2']}\n{my_shipping['shipping_city']}\n{my_shipping['shipping_state']}\n{my_shipping['shipping_zipcode']}\n{my_shipping['shipping_country']}"
         amount_paid = totals
 
-
         # Get the host
         host = request.get_host()
         # Create invoice number
@@ -227,7 +228,7 @@ def billing_info(request):
         paypal_dict = {
             'business': settings.PAYPAL_RECEIVER_EMAIL,
             'amount': totals,
-            'item_name': 'Order',
+            'item_name': cart_products,
             'no_shipping': '2',
             'invoice': my_invoice,
             'currency_code': 'USD',  # EUR for Euros
@@ -279,9 +280,8 @@ def billing_info(request):
                 # Delete shopping cart in database (old_cart field)
                 current_user.update(old_cart="")
 
-
             return render(request, "payment/billing_info.html",
-                          {"paypal_form":paypal_form, "cart_products": cart_products, "quantities": quantities,
+                          {"paypal_form": paypal_form, "cart_products": cart_products, "quantities": quantities,
                            "totals": totals, "shipping_info": request.POST, "billing_form": billing_form})
 
         else:
@@ -318,16 +318,12 @@ def billing_info(request):
             # Get The Billing Form
             billing_form = PaymentForm()
             return render(request, "payment/billing_info.html",
-                          {"paypal_form":paypal_form, "cart_products": cart_products, "quantities": quantities,
+                          {"paypal_form": paypal_form, "cart_products": cart_products, "quantities": quantities,
                            "totals": totals, "shipping_info": request.POST, "billing_form": billing_form})
-
 
     else:
         messages.success(request, "Access Denied")
         return redirect('home')
-
-
-
 
 
 def checkout(request):
@@ -362,6 +358,7 @@ def payment_success(request):
     cart_products = cart.get_prods
     quantities = cart.get_quants
     totals = cart.cart_total()
+
     # Delete the cart
     for key in list(request.session.keys()):
         if key == "session_key":
@@ -373,3 +370,4 @@ def payment_success(request):
 
 def payment_failed(request):
     return render(request, 'payment/payment_failed.html', {})
+
