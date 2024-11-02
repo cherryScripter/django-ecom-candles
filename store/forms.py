@@ -128,3 +128,4 @@ class SignUpForm(UserCreationForm):
         # Removing password-based authentication
         # if 'usable_password' in self.fields:
         #     del self.fields['usable_password']
+

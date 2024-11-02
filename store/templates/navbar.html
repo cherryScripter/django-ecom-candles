@@ -18,7 +18,9 @@
                 <li><a class="dropdown-item" href="{% url 'update_user' %}">User Profile</a></li>
                 <li><hr class="dropdown-divider" /></li>
 <li><a class="dropdown-item" href="{% url 'update_info' %}">Shipping and Payment Details</a></li>
-                            </ul>
+                            <li><hr class="dropdown-divider" /></li>
+<li><a class="dropdown-item" href="{% url 'order_history' %}">Order History</a></li>
+            </ul>
                         </li>
             {% if user.is_superuser %}
               <li class="nav-item dropdown">

@@ -23,10 +23,10 @@ SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-# ALLOWED_HOSTS = ['localhost', '8d61-2a02-a31a-a2f1-c780-786e-a633-5c78-fb7f.ngrok-free.app']
+#
+# ALLOWED_HOSTS = ['localhost', '971a-188-146-36-40.ngrok-free.app']
 # # CSRF_TRUSTED_ORIGINS = ['https://djangotest.com', 'https://django-ecommerce-production-81b6.up.railway.app']
-# CSRF_TRUSTED_ORIGINS = ['https://8d61-2a02-a31a-a2f1-c780-786e-a633-5c78-fb7f.ngrok-free.app']
+# CSRF_TRUSTED_ORIGINS = ['https://971a-188-146-36-40.ngrok-free.app']
 
 SESSION_COOKIE_AGE = 86400
 
@@ -158,3 +158,6 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'cozyandkindled@gmail.com'
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = 'cozyandkindled@gmail.com'
+
+
+# PAYPAL_PDT_TOKEN = 'tMCszT5bWo9p9pMaGpPf6VxCv_VG2pn3akX4DDZEKQT3_SV5FtAc_aYDobq'

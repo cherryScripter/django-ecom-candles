@@ -2,30 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Subject: Order Confirmation - Thank You for Your Purchase!</title>
+    <title>Order Confirmation - Thank You for Your Purchase!</title>
 </head>
 <body>
-<p>
-    Dear {{ name }},
+    <p>Dear {{ name }},</p>
+    <p>thank you for shopping with Cozy & Kindled! <br> We are excited to let you know that your order has been successfully placed and your payment was received.</p>
 
-Thank you for shopping with Cozy & Kindled! We are excited to let you know that your order has been successfully placed and your payment was received.
+    <p><strong>Order Details:</strong></p>
+    <p><strong>Item(s) Purchased:</strong></p>
+    <ul>
+        {% for item in cart_products %}
+            <li>{{ item }}</li>
+        {% endfor %}
+    </ul>
 
-Order Details:
+    <p><strong>Total Amount Paid:</strong> ${{ totals }}</p>
 
-Item(s) Purchased:
-{{ cart_products }}
+    <p>At Cozy & Kindled, we craft soy candles that bring warmth, comfort, and peace to your home.<br>Made from natural ingredients, our candles are designed to create a cozy, eco-conscious ambiance.<br>We hope that each flicker invites calm into your space, just as we envisioned.</p>
 
-Total Amount Paid: ${{ totals }}
+    <p>Your order is being processed and will be shipped soon. We’ll notify you when it’s on its way!</p>
 
-At Cozy & Kindled, we craft soy candles that bring warmth, comfort, and peace to your home. Made from natural ingredients, our candles are designed to create a cozy, eco-conscious ambiance. We hope that each flicker invites calm into your space, just as we envisioned.
-
-Your order is being processed and will be shipped soon. We’ll notify you when it’s on its way!
-
-If you have any questions or need assistance, feel free to contact us at [Contact Information].
-
-Warm regards,
-The Cozy & Kindled Team
-</p>
-
+    <p>If you have any questions or need assistance, feel free to contact us at: cozyandkindled@gmail.com.</p>
+<br>
+    <p>Warm regards,<br> ♡ The Cozy & Kindled Team </p>
 </body>
 </html>

@@ -4,10 +4,11 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 
 
+
 # Create Customer Profile
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    date_modified = models.DateTimeField(User, auto_now=True)
+    date_modified = models.DateTimeField(auto_now=True)
     phone = models.CharField(max_length=20, blank=True)
     address1 = models.CharField(max_length=200, blank=True)
     address2 = models.CharField(max_length=200, blank=True)
@@ -16,6 +17,10 @@ class Profile(models.Model):
     zipcode = models.CharField(max_length=200, blank=True)
     country = models.CharField(max_length=200, blank=True)
     old_cart = models.CharField(max_length=200, blank=True, null=True)
+
+    @property
+    def full_name(self):
+        return f"{self.user.first_name} {self.user.last_name}".strip()
 
     def __str__(self):
         return self.user.username
@@ -71,8 +76,11 @@ class Product(models.Model):
 
 
 class ProductReview(models.Model):
+    # from store.models import Order
     product = models.ForeignKey(Product, related_name='reviews', on_delete=models.CASCADE)
     user = models.ForeignKey(User, related_name='reviews', on_delete=models.CASCADE)
+    order_item = models.OneToOneField('payment.OrderItem', on_delete=models.CASCADE, null=True, blank=True)
+    # order = models.ForeignKey(Order, related_name='reviews', on_delete=models.CASCADE, null=True)
     content = models.TextField(blank=True, null=True, max_length=400)
     rating = models.IntegerField(default=0)
     date = models.DateField(auto_now_add=True)

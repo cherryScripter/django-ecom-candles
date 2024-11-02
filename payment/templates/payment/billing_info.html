@@ -7,8 +7,8 @@
         <header class="bg-dark py-5">
             <div class="container px-4 px-lg-5 my-5">
                 <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder">Billing Info</h1>
-                    <p class="lead fw-normal text-white-50 mb-0">Enter Your Payment Info...</p>
+                    <h1 class="display-4 fw-bolder">Payment</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">Complete your purchase</p>
                 </div>
             </div>
         </header>
@@ -52,7 +52,7 @@
   </div>
   <div class="card-body">
 
-    Name: {{ shipping_info.shipping_full_name }}<br/>
+    Name: {{ shipping_info.full_name }}<br/>
     Email: {{ shipping_info.shipping_email }}<br/>
     Address 1: {{ shipping_info.shipping_address1 }}<br/>
     Address 2: {{ shipping_info.shipping_address2 }}<br/>
@@ -67,30 +67,27 @@
 </div>
 <br/><br/>
 
-<center>
-    {{ paypal_form.render }}
-</center>
+<div class="text-center">
+    <div class="card mb-4" style="border-color: #0056b3; border-width: 2px; background-color: #e7f3ff;">
+        <div class="card-body">
+            <h5 class="card-title" style="font-size: 1.2rem; color: #0056b3;">
+                To proceed with your purchase, please click the PayPal button below. You will be redirected to PayPal to complete your payment securely.
+            </h5>
+        </div>
+    </div>
 
-<br/><br/>
+    <h4 class="mb-2">Total Amount Due: <strong>${{ totals }}</strong></h4>
+    <h5 class="mb-5">Click 'Buy Now' to pay:</h5>
 
+    <div class="mb-5">
+        {{ paypal_form.render }}
+    </div>
 
-<div class="card">
-  <div class="card-header">
-    Billing Info
-  </div>
-  <div class="card-body">
-    <form method="POST" action="{% url 'process_order' %}">
-      {% csrf_token %}
-    {{ billing_form.as_p }}
-  </div>
+    <p class="text-muted mt-5">If you have any questions or concerns, please contact our support team at <a href="mailto:cozyandkindled@gmail.com">cozyandkindled@gmail.com</a>.</p>
 </div>
-<br/>
-    <button type="submit" class="btn btn-secondary">
-      Pay Now
-    </button>
-    </form>
 
-                        <div style="margin-top: 80px;"></div>
+
+<div style="margin-top:80px;"></div>
 
 
             </div>

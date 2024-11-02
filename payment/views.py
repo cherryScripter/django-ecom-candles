@@ -3,11 +3,10 @@ from django.shortcuts import render, redirect
 from cart.cart import Cart
 from payment.forms import ShippingForm, PaymentForm
 from payment.models import ShippingAddress, Order, OrderItem
-from django.contrib.auth.models import User
 from django.contrib import messages
 from store.models import Product, Profile
-from django.core.mail import EmailMessage
-from django.template.loader import render_to_string
+from django.shortcuts import render
+from .models import Order
 
 # Import Some Paypal Stuff
 from django.urls import reverse
@@ -104,7 +103,7 @@ def process_order(request):
         my_shipping = request.session.get('my_shipping')
 
         # Gather Order Info
-        full_name = my_shipping['shipping_full_name']
+        full_name = my_shipping['full_name']
         email = my_shipping['shipping_email']
         # Create Shipping Address from session info
         shipping_address = f"{my_shipping['shipping_address1']}\n{my_shipping['shipping_address2']}\n{my_shipping['shipping_city']}\n{my_shipping['shipping_state']}\n{my_shipping['shipping_zipcode']}\n{my_shipping['shipping_country']}"
@@ -213,7 +212,7 @@ def billing_info(request):
         request.session['my_shipping'] = my_shipping
 
         # Gather Order Info
-        full_name = my_shipping['shipping_full_name']
+        full_name = my_shipping['full_name']
         email = my_shipping['shipping_email']
         # Create Shipping Address from session info
         shipping_address = f"{my_shipping['shipping_address1']}\n{my_shipping['shipping_address2']}\n{my_shipping['shipping_city']}\n{my_shipping['shipping_state']}\n{my_shipping['shipping_zipcode']}\n{my_shipping['shipping_country']}"
@@ -371,3 +370,55 @@ def payment_success(request):
 def payment_failed(request):
     return render(request, 'payment/payment_failed.html', {})
 
+
+# views.py
+def order_history(request):
+    user_orders = []  # Initialize list of orders with their items and review status
+
+    if request.user.is_authenticated:
+        # Fetch all orders associated with the user
+        orders = Order.objects.filter(user=request.user)
+
+        for order in orders:
+            order_items = []
+
+            for item in order.orderitem_set.all():
+                # Check if the product has a review by the user
+                has_review = item.product.reviews.filter(user=request.user).exists()
+                order_items.append({
+                    'item': item,
+                    'has_review': has_review  # True if review exists, False otherwise
+                })
+
+            user_orders.append({'order': order, 'items': order_items})
+
+    return render(request, 'payment/order_history.html', {
+        'user_orders': user_orders
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+# def order_history(request):
+#     user_orders = []  # Initialize to an empty list
+#
+#     if request.user.is_authenticated:
+#         # Fetch all orders associated with the user
+#         reviewed_orders = []  # Orders with reviewed products
+#         unreviewed_orders = []  # Orders with unreviewed products
+#
+#         # Debugging output to check if orders are fetched
+#         print(f"Authenticated User: {request.user.username}")
+#         print(f"User Orders Count: {user_orders.count()}")
+#         for order in user_orders:
+#             print(f"Order ID: {order.id}, Amount Paid: {order.amount_paid}, Shipped: {order.shipped}")
+#
+#     return render(request, 'payment/order_history.html', {'user_orders': user_orders})

@@ -1,0 +1,377 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+
+<div class="container">
+<br/>
+
+
+<div class="card mb-3">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="...">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <center>
+        <h5 class="card-title">{{ product.name }}</h5>
+        <br/>
+        <p class="card-text justified">{{ product.description }}</p>
+
+        {% if product.is_sale %}
+        <div class="d-flex justify-content-center small text-warning mb-2">
+                <div class="bi-star-fill"></div>
+                &nbsp;&nbsp;Sale!&nbsp;&nbsp;
+                <div class="bi-star-fill"></div>
+                </div>
+
+                <!-- Product price-->
+                <strike>
+                ${{ product.price }}
+                </strike>
+                &nbsp;
+                ${{ product.sale_price }}
+
+
+        {% else %}
+            ${{ product.price }}
+
+        {% endif %}
+
+            <br/><br/>
+<div class="row justify-content-center">
+    <div class="col-md-2">Quantity:</div>
+                <div class="col-md-2">
+                <select class="form-select form-select-sm" id="qty-cart">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                </select>
+                </div>
+            </div>
+            <br/><br/>
+        <button type="button" value="{{ product.id }}" class="btn btn-secondary" id="add-cart">Add To Cart</button>
+
+    </center>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="featurette-divider">
+
+<!-- Reviews Section -->
+<div class="card mb-4" style="background-color: #f8f9fa;"> <!-- Light grey background -->
+  <div class="card-body">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <h4 style="margin: 0;">Customer Reviews</h4>
+    </div>
+    <hr class="featurette-divider">
+
+    <!-- Reviews Loop -->
+    {% for review in reviews %}
+<div class="media text-muted">
+    <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+        <strong class="d-inline text-gray-dark">Rating:</strong>
+        <span class="d-inline">{{ review.stars }}</span>
+        <br>
+        <strong class="d-inline text-gray-dark">Date:</strong>
+        <span class="d-inline">{{ review.date|date:"Y-m-d" }}</span>
+        <br><br>
+        {{ review.user }}
+        <br>
+        {{ review.content }}
+    </p>
+</div>
+    {% empty %}
+    <!-- No Reviews Section -->
+    <div class="card-body">
+      <p class="media-body mb-0 small lh-125">
+        No reviews yet.
+      </p>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Add a Review Section (Only for Authenticated Users) -->
+<div class="card" style="background-color: #f8f9fa;"> <!-- Light grey background -->
+  <div class="card-body">
+    {% if request.user.is_authenticated %}
+    <h5>Add Your Review</h5>
+    <form method="POST" action=".">
+      {% csrf_token %}
+      <div class="form-group mb-3">
+        <label for="stars" class="form-label">Stars</label>
+        <select id="stars" class="form-select form-select-sm" name="rating" style="width: 50px;">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="exampleFormControlTextarea1" class="form-label">Content</label>
+        <textarea class="form-control" id="exampleFormControlTextarea1" name="content" rows="3"></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-secondary">Submit</button>
+    </form>
+    {% else %}
+    <!-- Message for Unauthenticated Users -->
+    <p>Please, <a href="{% url 'login' %}?next={{ request.path }}">sign in</a> to add a review.</p>
+    {% endif %}
+  </div>
+</div>
+
+
+<div style="margin-top: 80px;"></div>
+
+
+
+
+<script>
+// Check if button pressed
+$(document).on('click', '#add-cart', function(e){
+    e.preventDefault();
+    $.ajax({
+        type: 'POST',
+        url: '{% url 'cart_add' %}',
+        data: {
+    product_id: $('#add-cart').val(),
+    product_qty: $('#qty-cart option:selected').text(),
+    csrfmiddlewaretoken: '{{ csrf_token }}',
+    action: 'post'
+        },
+
+        success: function(json){
+            //console.log(json)
+            document.getElementById("cart_quantity").textContent = json.qty
+            location.reload();
+        },
+
+        error: function(xhr, errmsg, err){
+
+        }
+
+    });
+
+})
+</script>
+
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+to dziwne:
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+<br/>
+
+<div class="card mb-3">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="...">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <center>
+        <h5 class="card-title">{{ product.name }}</h5>
+        <br/>
+        <p class="card-text justified">{{ product.description }}</p>
+
+        {% if product.is_sale %}
+        <div class="d-flex justify-content-center small text-warning mb-2">
+                <div class="bi-star-fill"></div>
+                &nbsp;&nbsp;Sale!&nbsp;&nbsp;
+                <div class="bi-star-fill"></div>
+                </div>
+
+                <!-- Product price-->
+                <strike>
+                ${{ product.price }}
+                </strike>
+                &nbsp;
+                ${{ product.sale_price }}
+
+        {% else %}
+            ${{ product.price }}
+        {% endif %}
+
+            <br/><br/>
+<div class="row justify-content-center">
+    <div class="col-md-2">Quantity:</div>
+                <div class="col-md-2">
+                <select class="form-select form-select-sm" id="qty-cart">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                </select>
+                </div>
+            </div>
+            <br/><br/>
+        <button type="button" value="{{ product.id }}" class="btn btn-secondary" id="add-cart">Add To Cart</button>
+
+    </center>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="featurette-divider">
+
+<!-- Reviews Section -->
+<div class="card mb-4" style="background-color: #f8f9fa;"> <!-- Light grey background -->
+  <div class="card-body">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <h4 style="margin: 0;">Customer Reviews</h4>
+    </div>
+    <hr class="featurette-divider">
+
+    <!-- Reviews Loop -->
+    {% for review in reviews %}
+<div class="media text-muted">
+    <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+        <strong class="d-inline text-gray-dark">Rating:</strong>
+        <span class="d-inline">{{ review.stars }}</span>
+        <br>
+        <strong class="d-inline text-gray-dark">Date:</strong>
+        <span class="d-inline">{{ review.date|date:"Y-m-d" }}</span>
+        <br><br>
+        {{ review.user }}
+        <br>
+        {{ review.content }}
+    </p>
+</div>
+    {% empty %}
+    <!-- No Reviews Section -->
+    <div class="card-body">
+      <p class="media-body mb-0 small lh-125">
+        No reviews yet.
+      </p>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Add a Review Section (Only for Authenticated Users) -->
+<div class="card" style="background-color: #f8f9fa;"> <!-- Light grey background -->
+  <div class="card-body">
+    {% if request.user.is_authenticated %}
+      {% if has_paid_for_product %}  <!-- Check if the user has paid for the product -->
+        <h5>Add Your Review</h5>
+        <form method="POST" action=".">
+          {% csrf_token %}
+          <div class="form-group mb-3">
+            <label for="stars" class="form-label">Stars</label>
+            <select id="stars" class="form-select form-select-sm" name="rating" style="width: 60px;">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </div>
+
+          <div class="form-group mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label">Content</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" name="content" rows="3"></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-secondary">Submit</button>
+        </form>
+      {% else %}
+        <!-- Message for Users Who Haven't Paid -->
+        <p>You can only leave a review for products you have purchased and paid for.</p>
+      {% endif %}
+    {% else %}
+    <!-- Message for Unauthenticated Users -->
+    <p>Please, <a href="{% url 'login' %}?next={{ request.path }}">sign in</a> to add a review.</p>
+    {% endif %}
+  </div>
+</div>
+
+<div style="margin-top: 80px;"></div>
+
+<script>
+// Check if button pressed
+$(document).on('click', '#add-cart', function(e){
+    e.preventDefault();
+    $.ajax({
+        type: 'POST',
+        url: '{% url 'cart_add' %}',
+        data: {
+            product_id: $('#add-cart').val(),
+            product_qty: $('#qty-cart option:selected').text(),
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            action: 'post'
+        },
+
+        success: function(json){
+            document.getElementById("cart_quantity").textContent = json.qty;
+            location.reload();
+        },
+
+        error: function(xhr, errmsg, err){
+            // Handle error case
+        }
+    });
+});
+</script>
+
+</div>
+{% endblock %}
+

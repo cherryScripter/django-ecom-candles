@@ -13,6 +13,8 @@ from django import forms
 from django.db.models import Q
 import json
 from cart.cart import Cart
+from payment.models import OrderItem
+
 
 
 def search(request):
@@ -91,6 +93,7 @@ def update_user(request):
             login(request, current_user)
             messages.success(request, "User has been updated.")
             return redirect('home')
+
         return render(request, "update_user.html", {'user_form': user_form})
     else:
         messages.success(request, "You must be logged in to access that page.")
@@ -98,7 +101,6 @@ def update_user(request):
 
 
 def category_summary(request):
-
     categories = Category.objects.all()
     return render(request, 'category_summary.html', {"categories": categories})
 
@@ -116,24 +118,70 @@ def category(request, foo):
         messages.success(request, "That category doesn't exist.")
         return redirect('home')
 
+#
+# def product(request, pk):
+#     product = Product.objects.get(id=pk)
+#     reviews = ProductReview.objects.filter(product=product)
+#     # Prepare stars for each review
+#     for review in reviews:
+#         review.stars = '⭐' * review.rating
+#
+#     # Add a review
+#     if request.method == "POST" and request.user.is_authenticated:
+#         rating = request.POST.get('rating', 3)
+#         content = request.POST.get('content', '')
+#
+#         review = ProductReview.objects.create(product=product, user=request.user, rating=rating, content=content)
+#
+#         return redirect('product', pk=product.id)
+#
+#     return render(request, 'product.html', {'product': product, 'reviews': reviews})
+
 
 def product(request, pk):
     product = Product.objects.get(id=pk)
     reviews = ProductReview.objects.filter(product=product)
-    # Prepare stars for each review
+
+    # Display stars for each review rating
     for review in reviews:
         review.stars = '⭐' * review.rating
 
-    # Add a review
-    if request.method == "POST" and request.user.is_authenticated:
-        rating = request.POST.get('rating', 3)
-        content = request.POST.get('content', '')
+    # Initialize message variable
+    review_message = ""
 
-        review = ProductReview.objects.create(product=product, user=request.user, rating=rating, content=content)
+    if request.user.is_authenticated:
+        # Check if the user has purchased this product
+        order_item = OrderItem.objects.filter(
+            product=product,
+            user=request.user,
+            order__paid=True
+        ).first()
 
-        return redirect('product', pk=product.id)
+        if order_item:
+            # Check if the user has already reviewed this product
+            if ProductReview.objects.filter(product=product, user=request.user).exists():
+                review_message = "You have already added your review."
+            else:
+                # Allow review submission
+                if request.method == "POST":
+                    rating = request.POST.get('rating', 3)
+                    content = request.POST.get('content', '')
+                    ProductReview.objects.create(
+                        product=product,
+                        user=request.user,
+                        rating=rating,
+                        content=content
+                    )
+                    messages.success(request, "Thank you! Your review has been successfully submitted.")
+                    return redirect('product', pk=product.id)
+        else:
+            review_message = "You have to purchase this product first to add a review."
 
-    return render(request, 'product.html', {'product': product, 'reviews': reviews})
+    return render(request, 'product.html', {
+        'product': product,
+        'reviews': reviews,
+        'review_message': review_message,  # Pass the message to the template
+    })
 
 
 def home(request):
@@ -231,3 +279,7 @@ def register_user(request):
             return redirect('register')
     else:
         return render(request, 'register.html', {'form': form})
+
+
+def password_reset(request):
+    return render(request, 'password_reset.html', {})

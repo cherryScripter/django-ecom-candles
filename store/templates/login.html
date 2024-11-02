@@ -17,19 +17,27 @@
             <div class="col-8">
 
                 <br/><br/>
-                <form method="POST" action="{% url 'login' %}">
-                    {% csrf_token %}
-                    <input type="hidden" name="next" value="{{ next }}">  <!-- Hidden field for next -->
+<form method="POST" action="{% url 'login' %}">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ next }}">  <!-- Hidden field for next -->
 
-                    <div class="mb-3">
-                        <input type="text" class="form-control" name="username" placeholder="Enter Your Username" required>
-                    </div>
-                    <div class="mb-3">
-                        <input type="password" class="form-control" name="password" placeholder="Enter Your Password" required>
-                    </div>
-                    <br/><br/>
-                    <button type="submit" class="btn btn-secondary">Login</button>
-                </form>
+    <div class="mb-3">
+        <div class="col-8 mx-auto">
+            <input type="text" class="form-control" name="username" placeholder="Enter Your Username" required>
+        </div>
+    </div>
+    <div class="mb-3">
+        <div class="col-8 mx-auto">
+            <input type="password" class="form-control" name="password" placeholder="Enter Your Password" required>
+            <div class="text-end">
+                <a href="{% url 'password_reset' %}" class="small">Forgot password?</a>
+            </div>
+        </div>
+    </div>
+    <div class="text-center">
+        <button type="submit" class="btn btn-secondary">Login</button>
+    </div>
+</form>
 
                 <div style="margin-top: 80px;"></div>
 

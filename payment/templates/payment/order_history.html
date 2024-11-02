@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- Header Section -->
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Purchase History</h1>
+            <p class="lead fw-normal text-white-50 mb-0">View details of your previous orders</p>
+        </div>
+    </div>
+</header>
+
+<div class="container mt-5">
+    {% if user.is_authenticated %}
+        <h2>Purchase History and Reviews</h2>
+        <table class="table table-striped table-hover table-bordered mt-3">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Order ID</th>
+                    <th scope="col">Products</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Total Paid</th>
+                    <th scope="col">Date Ordered</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Review Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order_data in user_orders %}
+                    <tr>
+                        <td>#{{ order_data.order.id }}</td>
+                        <td>
+                            {% for product_data in order_data.items %}
+                                <p><a href="{% url 'product' pk=product_data.item.product.id %}">{{ product_data.item.product.name }}</a></p>
+                            {% endfor %}
+                        </td>
+
+                        <td>
+                            {% for product_data in order_data.items %}
+                                <p>{{ product_data.item.quantity }}</p>
+                            {% endfor %}
+                        </td>
+
+                        <td>${{ order_data.order.amount_paid }}</td>
+                        <td>{{ order_data.order.date_ordered|date:"F j, Y" }}</td>
+                        <td>{{ order_data.order.paid|yesno:"Paid,Pending" }}</td>
+
+                        <td>
+                            {% for product_data in order_data.items %}
+                                <p>
+                                    {% if product_data.has_review %}
+                                        Review Added
+                                    {% else %}
+                                        <a href="{% url 'product' pk=product_data.item.product.id %}#review_form">Add a review</a>
+                                    {% endif %}
+                                </p>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="7">You have no previous orders.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="px-4 py-4 my-4 text-center">
+            <p class="lead mb-4">To see your order history, please log in.</p>
+            <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-primary btn-lg px-4">Login</a>
+            <a href="{% url 'register' %}" class="btn btn-outline-secondary btn-lg px-4">Register</a>
+        </div>
+    {% endif %}
+</div>
+<div style="margin-top: 100px;"></div>
+
+{% endblock %}
