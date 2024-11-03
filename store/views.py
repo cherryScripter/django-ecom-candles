@@ -184,9 +184,29 @@ def product(request, pk):
     })
 
 
+
+
+
+
+
+# def home(request):
+#     products = Product.objects.all()
+#     return render(request, 'home.html', {'products': products})
+#
+#
+
 def home(request):
     products = Product.objects.all()
+
+    # Check for the sort_by parameter in the GET request
+    sort_by = request.GET.get('sort_by')
+    if sort_by == 'price_asc':
+        products = products.order_by('price')  # Sort by price ascending
+    elif sort_by == 'price_desc':
+        products = products.order_by('-price')  # Sort by price descending
+
     return render(request, 'home.html', {'products': products})
+
 
 
 def about(request):

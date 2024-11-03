@@ -14,9 +14,18 @@
         </header>
         <!-- Section-->
         <section class="py-5">
+            <div class="container px-4 px-lg-5 mt-2">
+            <div class="d-flex justify-content-end mb-3">
+            <form method="GET" action="{% url 'home' %}">
+            <label for="sort-by">Sort by price:</label>
+            <select name="sort_by" id="sort-by" onchange="this.form.submit()">
+                <option value="">Select</option>
+                <option value="price_asc" {% if request.GET.sort_by == 'price_asc' %}selected{% endif %}>▲</option>
+                <option value="price_desc" {% if request.GET.sort_by == 'price_desc' %}selected{% endif %}>▼</option>
+            </select>
+            </form>
+            </div>
 
-            <div class="container px-4 px-lg-5 mt-5">
-            
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                         
                 {% for product in products %}
@@ -40,7 +49,6 @@
                 &nbsp;&nbsp;Sale!&nbsp;&nbsp;
                 <div class="bi-star-fill"></div>
                 </div>
-
                                     <!-- Product price-->
                                     <strike>
                                     ${{ product.price }}
@@ -57,8 +65,6 @@
                             </div>
                         </div>
                     </div>
-
-
                     {% else %}
                 <div class="col mb-5">
                         <div class="card h-100">
@@ -79,11 +85,10 @@
                             </div>
                         </div>
                     </div>
-
                         {% endif %}
                     {% endfor %}
 
-
+            </div>
             </div>
         </section>
 
