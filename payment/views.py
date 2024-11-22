@@ -444,40 +444,6 @@ def payment_failed(request: HttpRequest) -> HttpResponse:
     return render(request, 'payment/payment_failed.html', {})
 
 
-# def order_history(request: HttpRequest) -> HttpResponse:
-#     """
-#     Displays the order history table for authenticated users, including a review status for each item.
-#
-#     Args:
-#         request (HttpRequest): The HTTP request object.
-#
-#     Returns:
-#         HttpResponse: Renders the order history page with detailed order and review information.
-#     """
-#     user_orders = []  # Initialize list of orders with their items and review status
-#
-#     if request.user.is_authenticated:
-#         # Fetch all orders associated with the user
-#         orders = Order.objects.filter(user=request.user).order_by('-id')
-#
-#         for order in orders:
-#             order_items = []
-#
-#             for item in order.orderitem_set.all():
-#                 # Check if the product has a review by the user
-#                 has_review = item.product.reviews.filter(user=request.user).exists()
-#                 order_items.append({
-#                     'item': item,
-#                     'has_review': has_review  # True if review exists, False otherwise
-#                 })
-#
-#             user_orders.append({'order': order, 'items': order_items})
-#
-#     return render(request, 'payment/order_history.html', {
-#         'user_orders': user_orders
-#     })
-
-
 def order_history(request):
     """
     Displays the order history table for authenticated users, including a review status for each item.
