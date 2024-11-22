@@ -20,10 +20,10 @@ The store provides the following features:
 ---
 
 ## Screenshots
-![home_page](screenshots/screenshot 1.png)
-![login_page](screenshots/screenshot 7.png)
-![product_age](screenshots/screenshot 4.png)
-![paypal](screenshots/screenshot 5.png)
-![order_history](screenshots/screenshot 8.png)
-![admin_unshipped_page](screenshots/screenshot 15.png)
-![categories](screenshots/screenshot 12.png)
+![home_page](screenshots/screenshot_1.png)
+![login_page](screenshots/screenshot_7.png)
+![product_age](screenshots/screenshot_4.png)
+![paypal](screenshots/screenshot_5.png)
+![order_history](screenshots/screenshot_8.png)
+![admin_unshipped_page](screenshots/screenshot_15.png)
+![categories](screenshots/screenshot_12.png)
