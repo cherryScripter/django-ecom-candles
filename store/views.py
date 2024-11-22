@@ -1,4 +1,4 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 import requests
 from .models import Product, Category, Profile, ProductReview
@@ -14,10 +14,20 @@ from django.db.models import Q
 import json
 from cart.cart import Cart
 from payment.models import OrderItem
+from typing import Union
 
 
+def search(request: HttpRequest) -> HttpResponse:
+    """
+    Handles the search functionality for products.
 
-def search(request):
+    Args:
+        request (HttpRequest): The HTTP request object containing user search input.
+
+    Returns:
+        HttpResponse: Renders the 'search.html' template with search results
+                      or a message if no results are found.
+    """
     # Determine if they filled out the form
     if request.method == "POST":
         searched = request.POST['searched']
@@ -33,7 +43,17 @@ def search(request):
         return render(request, "search.html", {})
 
 
-def update_info(request):
+def update_info(request: HttpRequest) -> HttpResponse:
+    """
+    Updates the user's profile and shipping information.
+
+    Args:
+        request (HttpRequest): The HTTP request object containing form data.
+
+    Returns:
+        HttpResponse: Redirects to 'home' upon successful update or renders
+                      'update_info.html' with the forms for update.
+    """
     if request.user.is_authenticated:
         # Get Current User
         current_user = Profile.objects.get(user__id=request.user.id)
@@ -58,7 +78,17 @@ def update_info(request):
         return redirect('home')
 
 
-def update_password(request):
+def update_password(request: HttpRequest) -> HttpResponse:
+    """
+    Allows the user to update their password.
+
+    Args:
+        request (HttpRequest): The HTTP request object containing form data.
+
+    Returns:
+        HttpResponse: Redirects to 'update_user' if password is successfully changed,
+                      otherwise renders 'update_password.html' with the form.
+    """
     if request.user.is_authenticated:
         current_user = request.user
         # Did they fill out the form
@@ -82,7 +112,17 @@ def update_password(request):
         return redirect('home')
 
 
-def update_user(request):
+def update_user(request: HttpRequest) -> HttpResponse:
+    """
+    Updates the logged-in user's account information.
+
+    Args:
+        request (HttpRequest): The HTTP request object containing form data.
+
+    Returns:
+        HttpResponse: Redirects to 'home' on success or renders 'update_user.html'
+                      with the form for editing user details.
+    """
     if request.user.is_authenticated:
         current_user = User.objects.get(id=request.user.id)
         user_form = UpdateUserForm(request.POST or None, instance=current_user)
@@ -100,12 +140,32 @@ def update_user(request):
         return redirect('home')
 
 
-def category_summary(request):
+def category_summary(request: HttpRequest) -> HttpResponse:
+    """
+    Displays a summary of all product categories.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: Renders 'category_summary.html' with a list of categories.
+    """
     categories = Category.objects.all()
     return render(request, 'category_summary.html', {"categories": categories})
 
 
-def category(request, foo):
+def category(request: HttpRequest, foo: str) -> HttpResponse:
+    """
+    Displays products belonging to a specific category.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        foo (str): The category name extracted from the URL.
+
+    Returns:
+        HttpResponse: Renders 'category.html' with the products and category details
+                      or redirects to 'home' if the category is not found.
+    """
     # Replace Hyphens with Spaces
     foo = foo.replace('-', ' ')
     # Grab the category from the url
@@ -118,27 +178,19 @@ def category(request, foo):
         messages.success(request, "That category doesn't exist.")
         return redirect('home')
 
-#
-# def product(request, pk):
-#     product = Product.objects.get(id=pk)
-#     reviews = ProductReview.objects.filter(product=product)
-#     # Prepare stars for each review
-#     for review in reviews:
-#         review.stars = '⭐' * review.rating
-#
-#     # Add a review
-#     if request.method == "POST" and request.user.is_authenticated:
-#         rating = request.POST.get('rating', 3)
-#         content = request.POST.get('content', '')
-#
-#         review = ProductReview.objects.create(product=product, user=request.user, rating=rating, content=content)
-#
-#         return redirect('product', pk=product.id)
-#
-#     return render(request, 'product.html', {'product': product, 'reviews': reviews})
 
+def product(request: HttpRequest, pk: int) -> HttpResponse:
+    """
+    Displays the details of a specific product and handles user reviews.
 
-def product(request, pk):
+    Args:
+        request (HttpRequest): The HTTP request object.
+        pk (int): The primary key of the product.
+
+    Returns:
+        HttpResponse: Renders 'product.html' with product details, reviews,
+                      and review-related messages.
+    """
     product = Product.objects.get(id=pk)
     reviews = ProductReview.objects.filter(product=product)
 
@@ -184,18 +236,16 @@ def product(request, pk):
     })
 
 
+def home(request: HttpRequest) -> HttpResponse:
+    """
+    Displays the homepage with all products, supporting optional sorting.
 
+    Args:
+        request (HttpRequest): The HTTP request object with optional sorting parameters.
 
-
-
-
-# def home(request):
-#     products = Product.objects.all()
-#     return render(request, 'home.html', {'products': products})
-#
-#
-
-def home(request):
+    Returns:
+        HttpResponse: Renders 'home.html' with the list of products.
+    """
     products = Product.objects.all()
 
     # Check for the sort_by parameter in the GET request
@@ -208,12 +258,30 @@ def home(request):
     return render(request, 'home.html', {'products': products})
 
 
+def about(request: HttpRequest) -> HttpResponse:
+    """
+    Displays the about page of the website.
 
-def about(request):
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: Renders 'about.html'.
+    """
     return render(request, 'about.html', {})
 
 
-def get_inspired(request):
+def get_inspired(request: HttpRequest) -> Union[JsonResponse, HttpResponse]:
+    """
+    Fetches and displays a random quote from an external API.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        JsonResponse or HttpResponse: Returns JSON data if the request is AJAX,
+                                      otherwise renders 'get_inspired.html'.
+    """
     api_url = 'https://zenquotes.io/api/random'
 
     try:
@@ -237,7 +305,17 @@ def get_inspired(request):
     return render(request, 'get_inspired.html', {'quote': quote, 'author': author})
 
 
-def login_user(request):
+def login_user(request: HttpRequest) -> HttpResponse:
+    """
+    Authenticates and logs in the user.
+
+    Args:
+        request (HttpRequest): The HTTP request object containing login credentials.
+
+    Returns:
+        HttpResponse: Redirects to the next URL or 'home' on success,
+                      or redirects to 'login' with an error message on failure.
+    """
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
@@ -275,31 +353,63 @@ def login_user(request):
         return render(request, 'login.html', {'next': next_url})
 
 
-def logout_user(request):
+def logout_user(request: HttpRequest) -> HttpResponse:
+    """
+    Logs out the current logged-in user.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: Redirects to 'home' with a success message.
+    """
     logout(request)
     messages.success(request, "You have been logged out.")
     return redirect('home')
 
 
-def register_user(request):
+def register_user(request: HttpRequest) -> HttpResponse:
+    """
+   Handles user registration and logs in the user upon successful registration.
+
+    Args:
+        request (HttpRequest): The HTTP request object containing registration form data.
+
+    Returns:
+        HttpResponse: Redirects to 'update_info' on success or renders 'register.html'
+                      with the registration form on failure.
+    """
     form = SignUpForm()
+
     if request.method == "POST":
         form = SignUpForm(request.POST)
+
         if form.is_valid():
             form.save()
             username = form.cleaned_data['username']
             password = form.cleaned_data['password1']
-            # log in user
+
+            # Log in the user
             user = authenticate(username=username, password=password)
             login(request, user)
+
             messages.success(request, "Username created - Please fill out your user info below.")
             return redirect('update_info')
         else:
-            messages.success(request, "Whoops! There was a problem registering, please try again.")
-            return redirect('register')
-    else:
-        return render(request, 'register.html', {'form': form})
+            messages.error(request, "There was a problem registering, please try again.")
+            return render(request, 'register.html', {'form': form})
+
+    return render(request, 'register.html', {'form': form})
 
 
-def password_reset(request):
+def password_reset(request: HttpRequest) -> HttpResponse:
+    """
+    Renders the password reset page.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: Renders 'password_reset.html'.
+    """
     return render(request, 'password_reset.html', {})

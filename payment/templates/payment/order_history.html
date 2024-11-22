@@ -22,7 +22,6 @@
                     <th scope="col">Quantity</th>
                     <th scope="col">Total Paid</th>
                     <th scope="col">Date Ordered</th>
-                    <th scope="col">Status</th>
                     <th scope="col">Review Status</th>
                 </tr>
             </thead>
@@ -44,7 +43,6 @@
 
                         <td>${{ order_data.order.amount_paid }}</td>
                         <td>{{ order_data.order.date_ordered|date:"F j, Y" }}</td>
-                        <td>{{ order_data.order.paid|yesno:"Paid,Pending" }}</td>
 
                         <td>
                             {% for product_data in order_data.items %}

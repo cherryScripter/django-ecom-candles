@@ -14,7 +14,6 @@ DB_PASSWORD_MY = os.environ.get('DB_PASSWORD_MY')
 # password DB
 # DB_PASSWORD_MY = os.environ['DB_PASSWORD_MY']
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -23,10 +22,10 @@ SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-#
-# ALLOWED_HOSTS = ['localhost', '971a-188-146-36-40.ngrok-free.app']
+# #
+# ALLOWED_HOSTS = ['localhost', 'b3af-2a02-a31a-a2f1-c780-b967-2724-7e68-1681.ngrok-free.app']
 # # CSRF_TRUSTED_ORIGINS = ['https://djangotest.com', 'https://django-ecommerce-production-81b6.up.railway.app']
-# CSRF_TRUSTED_ORIGINS = ['https://971a-188-146-36-40.ngrok-free.app']
+# CSRF_TRUSTED_ORIGINS = ['https://b3af-2a02-a31a-a2f1-c780-b967-2724-7e68-1681.ngrok-free.app']
 
 SESSION_COOKIE_AGE = 86400
 
@@ -143,6 +142,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# AUTH_USER_MODEL = 'store.CustomUser'
 
 # Add paypal settings
 # Set sandbox to true

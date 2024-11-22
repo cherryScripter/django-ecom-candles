@@ -7,6 +7,15 @@ from django.conf import settings
 
 
 def send_payment_confirmation_email(order):
+    """
+    Sends a payment confirmation email to the customer after an order is marked as paid.
+
+    Args:
+        order (Order): The order object containing payment and customer details.
+
+    Returns:
+        None
+    """
     # Email subject
     subject = f'Payment Confirmation - Order ID: {order.id}'
 
@@ -40,22 +49,20 @@ def send_payment_confirmation_email(order):
     email.send(fail_silently=False)
 
 
-# def send_payment_confirmation_email(order):
-#     subject = 'Payment Confirmation'
-#     message = f'Thank you for your payment, {order.full_name}!\n\n' \
-#               f'Your order (ID: {order.id}) has been confirmed.\n\n' \
-#               f'We will ship it to the following address:\n' \
-#               f'{order.shipping_address}\n\n' \
-#               'We appreciate your business!'
-#
-#     from_email = settings.EMAIL_HOST_USER
-#     recipient_list = [order.email]
-#
-#     send_mail(subject, message, from_email, recipient_list)
-
-
 @receiver(post_save, sender=Order)
 def order_paid(sender, instance, created, **kwargs):
+    """
+    Signal receiver triggered when an Order is saved. Sends a payment confirmation email if the order is marked as paid.
+
+    Args:
+        sender (type): The model class that sent the signal (Order).
+        instance (Order): The instance of the model being saved.
+        created (bool): Indicates if this is a new instance being created.
+        kwargs: Additional keyword arguments.
+
+    Returns:
+        None
+    """
     # Only send the email if the order is updated and marked as paid
     if not created and instance.paid:
         send_payment_confirmation_email(instance)

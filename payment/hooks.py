@@ -24,7 +24,5 @@ def paypal_payment_received(sender, **kwargs):
     # Save the order
     my_order.save()
 
-    # print(paypal_obj)
-    # print(f'Amount Paid:{paypal_obj.mc_gross}')
 
 

@@ -3,6 +3,9 @@ from .models import ShippingAddress
 
 
 class ShippingForm(forms.ModelForm):
+    """
+    Shipping address form.
+    """
     full_name = forms.CharField(label="", widget=forms.TextInput(
         attrs={'class': 'form-control', 'placeholder': 'Full Name'}), required=True)
     shipping_email = forms.CharField(label="", widget=forms.TextInput(
@@ -29,6 +32,9 @@ class ShippingForm(forms.ModelForm):
 
 
 class PaymentForm(forms.Form):
+    """
+    Payment form with card information and billing address.
+    """
     card_name = forms.CharField(label="",
                                 widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name On Card'}),
                                 required=True)

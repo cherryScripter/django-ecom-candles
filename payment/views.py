@@ -1,14 +1,14 @@
 import datetime
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from cart.cart import Cart
 from payment.forms import ShippingForm, PaymentForm
 from payment.models import ShippingAddress, Order, OrderItem
 from django.contrib import messages
-from store.models import Product, Profile
+from store.models import Product, Profile, ProductReview
 from django.shortcuts import render
 from .models import Order
-
-# Import Some Paypal Stuff
+# Import Some PayPal Stuff
 from django.urls import reverse
 from paypal.standard.forms import PayPalPaymentsForm
 from django.conf import settings
@@ -16,7 +16,17 @@ from django.conf import settings
 import uuid
 
 
-def orders(request, pk):
+def orders(request: HttpRequest, pk: int) -> HttpResponse:
+    """
+    Admin view to manage and update the shipping status of a specific order.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        pk (int): The primary key of the order to manage.
+
+    Returns:
+        HttpResponse: Renders the order details or redirects on failure.
+    """
     if request.user.is_authenticated and request.user.is_superuser:
         # Get the order
         order = Order.objects.get(id=pk)
@@ -46,7 +56,16 @@ def orders(request, pk):
         return redirect('home')
 
 
-def not_shipped_dash(request):
+def not_shipped_dash(request: HttpRequest) -> HttpResponse:
+    """
+    Admin view to display orders that have not been shipped yet.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: Renders the dashboard of unshipped orders or redirects on failure.
+    """
     if request.user.is_authenticated and request.user.is_superuser:
         orders = Order.objects.filter(shipped=False)
         if request.POST:
@@ -68,7 +87,16 @@ def not_shipped_dash(request):
         return redirect('home')
 
 
-def shipped_dash(request):
+def shipped_dash(request: HttpRequest) -> HttpResponse:
+    """
+    Admin view to display orders that have been shipped.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: Renders the dashboard of shipped orders or redirects on failure.
+    """
     if request.user.is_authenticated and request.user.is_superuser:
         orders = Order.objects.filter(shipped=True)
         if request.POST:
@@ -89,7 +117,17 @@ def shipped_dash(request):
         return redirect('home')
 
 
-def process_order(request):
+def process_order(request: HttpRequest) -> HttpResponse:
+    """
+    Processes an order from the cart, creates order and order items,
+    and clears the cart upon completion.
+
+    Args:
+        request (HttpRequest): The HTTP request object containing order and session data.
+
+    Returns:
+        HttpResponse: Redirects to the home page with success or access-denied messages.
+    """
     if request.POST:
         # Get the cart
         cart = Cart(request)
@@ -199,7 +237,16 @@ def process_order(request):
         return redirect('home')
 
 
-def billing_info(request):
+def billing_info(request: HttpRequest) -> HttpResponse:
+    """
+    Processes billing information and prepares PayPal payment data.
+
+    Args:
+        request (HttpRequest): The HTTP request object containing POST data for billing.
+
+    Returns:
+        HttpResponse: Renders the billing information page with PayPal form or redirects.
+    """
     if request.POST:
         # Get the cart
         cart = Cart(request)
@@ -325,7 +372,16 @@ def billing_info(request):
         return redirect('home')
 
 
-def checkout(request):
+def checkout(request: HttpRequest) -> HttpResponse:
+    """
+    Handles the checkout process for both authenticated users and guests.
+
+    Args:
+        request (HttpRequest): The HTTP request object containing cart and user information.
+
+    Returns:
+        HttpResponse: Renders the checkout page with shipping form and cart details.
+    """
     # Get the cart
     cart = Cart(request)
     cart_products = cart.get_prods
@@ -349,9 +405,17 @@ def checkout(request):
                        "shipping_form": shipping_form})
 
 
-def payment_success(request):
-    # Delete items in the browser cart
+def payment_success(request: HttpRequest) -> HttpResponse:
+    """
+    Handles the payment success process by clearing the cart and displaying a success page.
 
+    Args:
+        request (HttpRequest): The HTTP request object containing session and cart information.
+
+    Returns:
+        HttpResponse: Renders the payment success page.
+    """
+    # Delete items in the browser cart
     # Get the cart
     cart = Cart(request)
     cart_products = cart.get_prods
@@ -367,17 +431,34 @@ def payment_success(request):
     return render(request, 'payment/payment_success.html', {})
 
 
-def payment_failed(request):
+def payment_failed(request: HttpRequest) -> HttpResponse:
+    """
+    Handles the payment failure process by displaying an error message to the user.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: Renders the payment failure page with an appropriate message.
+    """
     return render(request, 'payment/payment_failed.html', {})
 
 
-# views.py
-def order_history(request):
+def order_history(request: HttpRequest) -> HttpResponse:
+    """
+    Displays the order history table for authenticated users, including a review status for each item.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: Renders the order history page with detailed order and review information.
+    """
     user_orders = []  # Initialize list of orders with their items and review status
 
     if request.user.is_authenticated:
         # Fetch all orders associated with the user
-        orders = Order.objects.filter(user=request.user)
+        orders = Order.objects.filter(user=request.user).order_by('-id')
 
         for order in orders:
             order_items = []
@@ -395,30 +476,3 @@ def order_history(request):
     return render(request, 'payment/order_history.html', {
         'user_orders': user_orders
     })
-
-
-
-
-
-
-
-
-
-
-
-
-# def order_history(request):
-#     user_orders = []  # Initialize to an empty list
-#
-#     if request.user.is_authenticated:
-#         # Fetch all orders associated with the user
-#         reviewed_orders = []  # Orders with reviewed products
-#         unreviewed_orders = []  # Orders with unreviewed products
-#
-#         # Debugging output to check if orders are fetched
-#         print(f"Authenticated User: {request.user.username}")
-#         print(f"User Orders Count: {user_orders.count()}")
-#         for order in user_orders:
-#             print(f"Order ID: {order.id}, Amount Paid: {order.amount_paid}, Shipped: {order.shipped}")
-#
-#     return render(request, 'payment/order_history.html', {'user_orders': user_orders})

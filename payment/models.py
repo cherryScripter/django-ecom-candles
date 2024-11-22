@@ -4,14 +4,22 @@ from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 import datetime
 
-# from django.apps import apps
-# from django.dispatch import receiver
-# import datetime
-
-# model_product = apps.get_model('store', 'Product')
-
 
 class ShippingAddress(models.Model):
+    """
+        Represents the shipping address of a user.
+
+        Attributes:
+            user (ForeignKey): The user associated with the shipping address.
+            full_name (str): The full name of the person receiving the shipment.
+            shipping_email (str): The email address associated with the shipping address.
+            shipping_address1 (str): The primary address line.
+            shipping_address2 (str): The secondary address line (optional).
+            shipping_city (str): The city where the shipment will be delivered.
+            shipping_state (str): The state/province (optional).
+            shipping_zipcode (str): The postal code for the address (optional).
+            shipping_country (str): The country where the shipment will be delivered.
+        """
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     full_name = models.CharField(max_length=255)
     shipping_email = models.CharField(max_length=255)
@@ -32,6 +40,9 @@ class ShippingAddress(models.Model):
 
 # Create a user Shipping Address by default when user signs up
 def create_shipping(sender, instance, created, **kwargs):
+    """
+    Automatically creates a ShippingAddress instance for a new user.
+    """
     if created:
         user_shipping = ShippingAddress(user=instance)
         user_shipping.save()
@@ -43,6 +54,21 @@ post_save.connect(create_shipping, sender=User)
 
 # Create Order Model
 class Order(models.Model):
+    """
+    Represents an order placed by a user, including shipping and payment details.
+
+    Attributes:
+        user (ForeignKey): The user who placed the order.
+        full_name (str): Full name of the person placing the order.
+        email (str): The email address for order correspondence.
+        shipping_address (ForeignKey): The shipping address for the order.
+        amount_paid (Decimal): The total amount paid for the order.
+        date_ordered (DateTime): The date and time when the order was placed.
+        shipped (bool): Whether the order has been shipped.
+        date_shipped (DateTime): The date and time when the order was shipped (nullable).
+        invoice (str): The invoice identifier (nullable).
+        paid (bool): Whether the order has been paid.
+    """
     # Foreign Key
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='payment_orders', null=True, blank=True)
     full_name = models.CharField(max_length=250)
@@ -63,6 +89,9 @@ class Order(models.Model):
 # Auto Add shipping Date
 @receiver(pre_save, sender=Order)
 def set_shipped_date_on_update(sender, instance, **kwargs):
+    """
+    Automatically sets the `date_shipped` field when the order is marked as shipped.
+    """
     if instance.pk:
         now = datetime.datetime.now()
         obj = sender._default_manager.get(pk=instance.pk)
@@ -72,6 +101,16 @@ def set_shipped_date_on_update(sender, instance, **kwargs):
 
 # Create Order Items Model
 class OrderItem(models.Model):
+    """
+    Represents an individual item within an order.
+
+    Attributes:
+        order (ForeignKey): The order that this item belongs to.
+        product (ForeignKey): The product being purchased.
+        user (ForeignKey): User who purchased the item (optional).
+        quantity (PositiveBigIntegerField): Quantity of the product in the order.
+        price (DecimalField): Price of the product at the time of purchase.
+    """
     from store.models import Product
     # Foreign Keys
     order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True)
