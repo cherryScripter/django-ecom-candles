@@ -1,6 +1,7 @@
 # from store.models import Product, Profile
 from django.conf import settings
 from django.apps import apps
+# from ecom.store.models import Product
 
 model_product = apps.get_model('store', 'Product')
 model_profile = apps.get_model('store', 'Profile')
@@ -60,7 +61,7 @@ class Cart:
             # Save carty to the Profile Model
             current_user.update(old_cart=str(carty))
 
-    def add(self, product: Product, quantity: int) -> bool:
+    def add(self, product: model_product, quantity: int) -> bool:
         """
         Adds or updates a product in the cart, respecting a maximum quantity limit.
 

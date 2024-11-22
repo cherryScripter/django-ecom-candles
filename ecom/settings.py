@@ -22,10 +22,10 @@ SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-# #
-# ALLOWED_HOSTS = ['localhost', 'b3af-2a02-a31a-a2f1-c780-b967-2724-7e68-1681.ngrok-free.app']
+#
+# ALLOWED_HOSTS = ['localhost', '0e9a-2a02-a31a-a2f1-c780-c05a-b23e-77a8-d84a.ngrok-free.app']
 # # CSRF_TRUSTED_ORIGINS = ['https://djangotest.com', 'https://django-ecommerce-production-81b6.up.railway.app']
-# CSRF_TRUSTED_ORIGINS = ['https://b3af-2a02-a31a-a2f1-c780-b967-2724-7e68-1681.ngrok-free.app']
+# CSRF_TRUSTED_ORIGINS = ['https://0e9a-2a02-a31a-a2f1-c780-c05a-b23e-77a8-d84a.ngrok-free.app']
 
 SESSION_COOKIE_AGE = 86400
 
