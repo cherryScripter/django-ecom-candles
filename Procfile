@@ -1,1 +1,1 @@
-web: daphne ecom.asgi:application --bind 0.0.0.0:8080
+web: daphne ecom.asgi:application --bind 0.0.0.0:$PORT
