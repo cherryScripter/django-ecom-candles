@@ -23,10 +23,13 @@ SECRET_KEY = os.environ['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['django-ecom-candles-production.up.railway.app', 'https://django-ecom-candles-production.up.railway.app']
-# CSRF_TRUSTED_ORIGINS = ['https://djangotest.com', 'https://django-ecommerce-production-81b6.up.railway.app']
-CSRF_TRUSTED_ORIGINS = ['django-ecom-candles-production.up.railway.app', 'https://django-ecom-candles-production.up.railway.app']
+ALLOWED_HOSTS = [
+    'django-ecom-candles-production.up.railway.app',
+]
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://django-ecom-candles-production.up.railway.app',
+]
 SESSION_COOKIE_AGE = 86400
 
 CART_SESSION_ID = 'cart'
