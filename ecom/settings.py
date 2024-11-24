@@ -23,9 +23,9 @@ SECRET_KEY = os.environ['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = ['localhost', '4c31-2a02-a31a-a2f1-c780-c05a-b23e-77a8-d84a.ngrok-free.app']
-# # CSRF_TRUSTED_ORIGINS = ['https://djangotest.com', 'https://django-ecommerce-production-81b6.up.railway.app']
-# CSRF_TRUSTED_ORIGINS = ['https://4c31-2a02-a31a-a2f1-c780-c05a-b23e-77a8-d84a.ngrok-free.app']
+ALLOWED_HOSTS = ['django-ecom-candles-production.up.railway.app', 'https://django-ecom-candles-production.up.railway.app']
+# CSRF_TRUSTED_ORIGINS = ['https://djangotest.com', 'https://django-ecommerce-production-81b6.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['django-ecom-candles-production.up.railway.app', 'https://django-ecom-candles-production.up.railway.app']
 
 SESSION_COOKIE_AGE = 86400
 
