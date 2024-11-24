@@ -1,3 +1,1 @@
-web: gunicorn store.wsgi --log-file
-web: python manage.py migrate && gunicorn store.wsg
-
+web: daphne ecom.asgi:application --bind 0.0.0.0:$PORT
