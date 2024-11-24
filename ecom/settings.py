@@ -159,6 +159,3 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'cozyandkindled@gmail.com'
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = 'cozyandkindled@gmail.com'
-
-
-# PAYPAL_PDT_TOKEN = 'tMCszT5bWo9p9pMaGpPf6VxCv_VG2pn3akX4DDZEKQT3_SV5FtAc_aYDobq'
