@@ -9,7 +9,7 @@ The store provides the following features:
 
 - User Account Creation: Users can create an account to manage their orders and personal information.
 - Add to Cart: Both logged-in and guest users can add items to their cart.
-- Checkout and Purchase: Users can proceed to checkout, and PayPal is integrated for payment processing (Note: actual payments are not processed, but it supports mock transactions using credit card details—real credit card information should never be used).
+- Checkout and Purchase: Users can proceed to checkout, and PayPal is integrated for payment processing (note: This is a portfolio website. All transactions occur in a sandbox environment for testing purposes only. No real payments will be processed. Please avoid using real credit card information during checkout.).
 - Order Confirmation: After a purchase, customers will receive an order confirmation email containing the list of items ordered and the total price.
 - Order History: Users can view their order history in their account profile.
 - Product Reviews: Logged-in users can add reviews for products (1 review per item).
