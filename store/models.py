@@ -2,7 +2,6 @@ from django.db import models
 import datetime
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
-from cloudinary_storage.storage import MediaCloudinaryStorage
 
 
 # Create Customer Profile
@@ -144,7 +143,7 @@ class Product(models.Model):
     price = models.DecimalField(default=0, decimal_places=2, max_digits=6)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, default=1)
     description = models.CharField(max_length=250, default='', blank=True, null=True)
-    image = models.ImageField(upload_to='uploads/product/', storage=MediaCloudinaryStorage())
+    image = models.ImageField(upload_to='uploads/product/')
     # Add Sale Stuff
     is_sale = models.BooleanField(default=False)
     sale_price = models.DecimalField(default=0, decimal_places=2, max_digits=6)
