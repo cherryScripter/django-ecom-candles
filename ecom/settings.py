@@ -15,7 +15,7 @@ DB_PASSWORD_MY = os.environ.get('DB_PASSWORD_MY')
 SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     'django-ecom-candles-production.up.railway.app',
