@@ -29,7 +29,3 @@ urlpatterns = [
     path('category_summary/', views.category_summary, name='category_summary'),
     path('search/', views.search, name='search'),
 ]
-
-
-# Serve media files when DEBUG=False (in development or local testing)
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
