@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -27,3 +29,7 @@ urlpatterns = [
     path('category_summary/', views.category_summary, name='category_summary'),
     path('search/', views.search, name='search'),
 ]
+
+
+# Serve media files when DEBUG=False (in development or local testing)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
