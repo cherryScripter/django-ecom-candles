@@ -31,6 +31,7 @@ CART_SESSION_ID = 'cart'
 # Application definition
 
 INSTALLED_APPS = [
+    'whitenoise.runserver_nostatic',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,7 +41,6 @@ INSTALLED_APPS = [
     'cart',
     'store',
     'payment',
-    'whitenoise.runserver_nostatic',
     'paypal.standard.ipn',
 ]
 
@@ -75,6 +75,11 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'ecom.wsgi.application'
+
+# # Database connection
+# DATABASES = {
+#     'default': dj_database_url.parse(os.environ['DATABASE_URL'])
+# }
 
 DATABASES = {
     'default': {
@@ -118,7 +123,7 @@ STATICFILES_DIRS = ['static/']
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-MEDIA_URL = '/media/'
+MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
