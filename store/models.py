@@ -143,7 +143,9 @@ class Product(models.Model):
     price = models.DecimalField(default=0, decimal_places=2, max_digits=6)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, default=1)
     description = models.CharField(max_length=250, default='', blank=True, null=True)
-    image = models.ImageField(upload_to='uploads/product/', null=True, blank=True)
+    image = models.ImageField(
+        upload_to='uploads/product/',
+        default='https://djangoecomproject.s3.us-east-1.amazonaws.com/default.jpeg'),
     # Add Sale Stuff
     is_sale = models.BooleanField(default=False)
     sale_price = models.DecimalField(default=0, decimal_places=2, max_digits=6)
