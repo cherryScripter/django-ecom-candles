@@ -10,6 +10,12 @@ admin.site.register(Profile)
 admin.site.register(ProductReview)
 
 
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ('name', 'price', 'category', 'is_sale', 'sale_price', 'image')
+    fields = (
+        'name', 'price', 'category', 'description', 'image', 'is_sale', 'sale_price')
+
+
 # Mix Profile info and User info
 class ProfileInline(admin.StackedInline):
     """
