@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from .models import Product
+from store.models import Product
 from django.conf import settings
 
 
