@@ -9,8 +9,11 @@ urlpatterns = [
                   path('cart/', include('cart.urls')),
                   path('payment/', include('payment.urls')),
 
-              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+              ]
 
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 # Serve media files in production (DEBUG=False)
-if not settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# if not settings.DEBUG:
+#     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# else:
+#     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
